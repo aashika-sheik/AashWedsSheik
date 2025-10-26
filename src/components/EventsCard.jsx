@@ -1,7 +1,31 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, MapPin, CalendarPlus, X, Chrome, Apple, Calendar as CalendarIcon } from "lucide-react";
-import { formatEventDate, formatTime } from "@/lib/formatEventDate";
+
+// Format date as DD/MM/YY
+const formatDateDDMMYY = (dateStr) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yy = String(date.getFullYear()).slice(-2);
+  return `${dd}/${mm}/${yy}`;
+};
+
+// Format time with AM/PM
+const formatTimeWithMeridiem = (time) => {
+  if (!time) return '';
+  let [h, m] = time.split(':').map(Number);
+  const meridiem = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${m.toString().padStart(2, '0')} ${meridiem}`;
+};
+
+// Format time range or "onwards"
+const formatAgendaTime = (startTime, endTime) => {
+  if (!endTime || endTime === '00:00') return `${formatTimeWithMeridiem(startTime)} onwards`;
+  return `${formatTimeWithMeridiem(startTime)} - ${formatTimeWithMeridiem(endTime)}`;
+};
 
 const Modal = ({ isOpen, onClose, children }) => (
   <AnimatePresence>
@@ -104,11 +128,11 @@ END:VCALENDAR`;
         <div className="space-y-3 text-gray-600">
           <div className="flex items-center space-x-3">
             <Calendar className="w-5 h-5 text-rose-500" />
-            <span>{formatEventDate(eventData.date)}</span>
+            <span>{formatDateDDMMYY(eventData.date)}</span>
           </div>
           <div className="flex items-center space-x-3">
             <Clock className="w-5 h-5 text-rose-500" />
-            <span>{formatTime(eventData.startTime, eventData.endTime)}</span>
+            <span>{formatAgendaTime(eventData.startTime, eventData.endTime)}</span>
           </div>
           <div className="flex items-center space-x-3">
             <MapPin className="w-5 h-5 text-rose-500" />

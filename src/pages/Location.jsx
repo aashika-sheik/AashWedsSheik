@@ -5,7 +5,7 @@ import { formatEventDate } from "@/lib/formatEventDate";
 export default function Location() {
     const locations = [
         {
-            name: "RK Marriage Hall",
+            name: "RK Kalayanamandapam",
             address: "S F No 276/3, Annur Road, Mettupalayam-641301",
             date: new Date("2025-11-23T10:00:00"),
             time: "10:30 AM onwards",
@@ -14,7 +14,7 @@ export default function Location() {
         },
         {
             name: "CSK Mahal",
-            address: "ATHANGARAI, GST Rd, Mamandur, Tamil Nadu 603111",
+            address: "Athangarai, GST Rd, Mamandur, Tamil Nadu 603111",
             date: new Date("2025-11-30T11:00:00"),
             time: "11:00 AM onwards",
             maps_embed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3892.9386529423705!2d79.94013997483566!3d12.652027087634726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52fd45956bb0bb%3A0xc2a1177f9d772431!2sCSK%20Mahal!5e0!3m2!1sen!2sin!4v1761043815669!5m2!1sen!2sin",

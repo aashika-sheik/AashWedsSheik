@@ -177,7 +177,7 @@ export default function Wishes() {
                                     className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-rose-100 focus:border-rose-300 focus:ring focus:ring-rose-200 focus:ring-opacity-50 transition-all duration-200 text-left flex items-center justify-between"
                                 >
                                     <span className={attendance ? 'text-gray-700' : 'text-gray-400'}>
-                                        {attendance ? options.find(opt => opt.value === attendance)?.label : 'Select attendance...'}
+                                        {attendance ? options.find(opt => opt.value === attendance)?.label : 'Share your presence...'}
                                     </span>
                                     <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`} />
                                 </button>
