@@ -91,22 +91,24 @@ export default function Hero() {
 
   const FloatingHearts = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(12)].map((_, i) => { // Reduced hearts to 12
+      {[...Array(12)].map((_, i) => {
         const size = 30 + Math.random() * 30; // 30-60px
+        const startX = Math.random() * (containerSize.width - size); // spread across full width
         return (
           <motion.div
             key={i}
             initial={{
               opacity: 1,
               scale: 1,
-              x: Math.random() * containerSize.width,
-              y: containerSize.height,
+              x: startX,
+              y: containerSize.height + size, // start below screen
             }}
             animate={{ y: -150 }}
             transition={{
               duration: 6 + Math.random() * 3,
               repeat: Infinity,
               ease: "linear",
+              delay: i * 0.5, // stagger hearts slowly, first heart delay 0
             }}
             className="absolute"
           >
@@ -129,7 +131,6 @@ export default function Hero() {
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center px-4 py-8 sm:py-12 text-center relative overflow-hidden">
-      {/* Floating hearts behind all content */}
       <FloatingHearts />
 
       <motion.div
@@ -168,7 +169,6 @@ export default function Hero() {
           </motion.h2>
         </div>
 
-        {/* Date & Time */}
         <motion.div
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
