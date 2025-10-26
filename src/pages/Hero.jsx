@@ -91,19 +91,34 @@ export default function Hero() {
 
   const FloatingHearts = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(30)].map((_, i) => {
+      {[...Array(12)].map((_, i) => { // Reduced hearts to 12
         const size = 30 + Math.random() * 30; // 30-60px
         return (
           <motion.div
             key={i}
-            initial={{ opacity: 1, scale: 1, x: Math.random() * containerSize.width, y: containerSize.height }}
+            initial={{
+              opacity: 1,
+              scale: 1,
+              x: Math.random() * containerSize.width,
+              y: containerSize.height,
+            }}
             animate={{ y: -150 }}
-            transition={{ duration: 6 + Math.random() * 3, repeat: Infinity, ease: "linear" }}
+            transition={{
+              duration: 6 + Math.random() * 3,
+              repeat: Infinity,
+              ease: "linear",
+            }}
             className="absolute"
           >
             <Heart
               style={{ width: size, height: size }}
-              className={i % 3 === 0 ? "text-rose-400" : i % 3 === 1 ? "text-pink-400" : "text-red-400"}
+              className={
+                i % 3 === 0
+                  ? "text-rose-400"
+                  : i % 3 === 1
+                  ? "text-pink-400"
+                  : "text-red-400"
+              }
               fill="currentColor"
             />
           </motion.div>
