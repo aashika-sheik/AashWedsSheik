@@ -5,7 +5,7 @@ import { formatEventDate } from "@/lib/formatEventDate";
 export default function Location() {
     const locations = [
         {
-            name: "RK Kalayanamandapam",
+            name: "R K Kalyana Mandapam",
             address: "S F No 276/3, Annur Road, Mettupalayam-641301",
             date: new Date("2025-11-23T10:00:00"),
             time: "10:30 AM onwards",

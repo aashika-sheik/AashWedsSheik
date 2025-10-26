@@ -71,15 +71,15 @@ export default function Hero() {
     }, [targetDate]);
 
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-3 sm:mt-4">
         {Object.keys(timeLeft).map((k) => (
           <motion.div
             key={k}
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="flex flex-col items-center p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-rose-100"
+            className="flex flex-col items-center p-2 sm:p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-rose-100"
           >
-            <span className="text-xl sm:text-2xl font-bold text-rose-600">
+            <span className="text-lg sm:text-2xl font-bold text-rose-600">
               {timeLeft[k]}
             </span>
             <span className="text-xs text-gray-500 capitalize">{k}</span>
@@ -89,60 +89,60 @@ export default function Hero() {
     );
   };
 
-  const FloatingHearts = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(15)].map((_, i) => {
-        const size = 30 + Math.random() * 30; // bigger hearts
-        return (
+  const FloatingHearts = () => {
+    // Precompute startX for each heart so it doesn’t jump to left
+    const hearts = [...Array(15)].map((_, i) => {
+      const size = 30 + Math.random() * 30;
+      const startX = Math.random() * containerSize.width; // fixed horizontal position
+      const startY = containerSize.height + Math.random() * 100;
+      const endY = -150 - Math.random() * 100;
+      const duration = 5 + Math.random() * 3;
+      const delay = Math.random() * 5;
+      const sway = 50 + Math.random() * 50;
+
+      return { size, startX, startY, endY, duration, delay, sway };
+    });
+
+    return (
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        {hearts.map((heart, i) => (
           <motion.div
             key={i}
-            initial={{
-              opacity: 0,
-              scale: 0,
-              x: Math.random() * containerSize.width,
-              y: containerSize.height,
-            }}
+            initial={{ opacity: 0, scale: 0, x: heart.startX, y: heart.startY }}
             animate={{
               opacity: [0, 1, 1, 0],
               scale: [0, 1, 1, 0.5],
-              x: Math.random() * containerSize.width,
-              y: -150, // floating higher
+              x: [heart.startX, heart.startX + heart.sway, heart.startX - heart.sway, heart.startX],
+              y: heart.endY,
             }}
             transition={{
-              duration: 6,
+              duration: heart.duration,
               repeat: Infinity,
-              delay: i * 0.5,
-              ease: "easeOut",
+              delay: heart.delay,
+              ease: "easeInOut",
             }}
             className="absolute"
           >
             <Heart
-              style={{ width: size, height: size }}
-              className={
-                i % 3 === 0
-                  ? "text-rose-400"
-                  : i % 3 === 1
-                  ? "text-pink-400"
-                  : "text-red-400"
-              }
+              style={{ width: heart.size, height: heart.size }}
+              className={i % 3 === 0 ? "text-rose-400" : i % 3 === 1 ? "text-pink-400" : "text-red-400"}
               fill="currentColor"
             />
           </motion.div>
-        );
-      })}
-    </div>
-  );
+        ))}
+      </div>
+    );
+  };
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 text-center relative overflow-hidden">
-      {/* Floating hearts behind all content */}
+    <section className="min-h-screen flex flex-col items-center justify-start px-4 pt-20 sm:pt-24 pb-2 text-center relative overflow-hidden">
       <FloatingHearts />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="space-y-6 relative z-10"
+        className="space-y-3 sm:space-y-4 relative z-10"
       >
         <motion.div
           initial={{ scale: 0 }}
@@ -155,7 +155,7 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <div className="space-y-4">
+        <div className="space-y-1 sm:space-y-2">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -176,10 +176,10 @@ export default function Hero() {
 
         {/* Date & Time */}
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
+          initial={{ y: 5, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col items-center mt-4"
+          className="flex flex-col items-center mt-2 sm:mt-3"
         >
           <div className="flex items-center space-x-2">
             <Calendar className="w-5 h-5 text-rose-400" />
@@ -190,15 +190,14 @@ export default function Hero() {
           <div className="flex items-center space-x-2 mt-1">
             <Clock className="w-5 h-5 text-rose-400" />
             <span className="text-gray-700 font-medium text-sm sm:text-base">
-              {formatAgendaTime(
-                config.data.agenda[0].startTime,
-                config.data.agenda[0].endTime
-              )}
+              {formatAgendaTime(config.data.agenda[0].startTime, config.data.agenda[0].endTime)}
             </span>
           </div>
         </motion.div>
 
-        <CountdownTimer targetDate={config.data.agenda[0].date} />
+        <div className="mb-2">
+          <CountdownTimer targetDate={config.data.agenda[0].date} />
+        </div>
       </motion.div>
     </section>
   );

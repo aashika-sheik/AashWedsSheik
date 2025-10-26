@@ -21,11 +21,11 @@ const config = {
         date: "2025-11-23",
         startTime: "10:30", // keep in 24-hour format
         endTime: null, // will show "10:30 AM onwards" in display
-        location: "RK Kalayanamandapam",
+        location: "R K Kalyana Mandapam",
         address: "Annur Road, Mettupalayam, Tamil Nadu",
       },
       {
-        title: "Walima",
+        title: "Reception",
         date: "2025-11-30",
         startTime: "11:00",
         endTime: null, // will show "11:00 AM onwards" in display
