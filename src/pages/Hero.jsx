@@ -71,15 +71,15 @@ export default function Hero() {
     }, [targetDate]);
 
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-3 sm:mt-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 sm:mt-6">
         {Object.keys(timeLeft).map((k) => (
           <motion.div
             key={k}
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="flex flex-col items-center p-2 sm:p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-rose-100"
+            className="flex flex-col items-center p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-rose-100"
           >
-            <span className="text-lg sm:text-2xl font-bold text-rose-600">
+            <span className="text-xl sm:text-2xl font-bold text-rose-600">
               {timeLeft[k]}
             </span>
             <span className="text-xs text-gray-500 capitalize">{k}</span>
@@ -89,77 +89,56 @@ export default function Hero() {
     );
   };
 
-  const FloatingHearts = () => {
-    // Precompute startX for each heart so it doesn’t jump to left
-    const hearts = [...Array(15)].map((_, i) => {
-      const size = 30 + Math.random() * 30;
-      const startX = Math.random() * containerSize.width; // fixed horizontal position
-      const startY = containerSize.height + Math.random() * 100;
-      const endY = -150 - Math.random() * 100;
-      const duration = 5 + Math.random() * 3;
-      const delay = Math.random() * 5;
-      const sway = 50 + Math.random() * 50;
-
-      return { size, startX, startY, endY, duration, delay, sway };
-    });
-
-    return (
-      <div className="absolute inset-0 w-full h-full pointer-events-none">
-        {hearts.map((heart, i) => (
+  const FloatingHearts = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(30)].map((_, i) => {
+        const size = 30 + Math.random() * 30; // 30-60px
+        return (
           <motion.div
             key={i}
-            initial={{ opacity: 0, scale: 0, x: heart.startX, y: heart.startY }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              scale: [0, 1, 1, 0.5],
-              x: [heart.startX, heart.startX + heart.sway, heart.startX - heart.sway, heart.startX],
-              y: heart.endY,
-            }}
-            transition={{
-              duration: heart.duration,
-              repeat: Infinity,
-              delay: heart.delay,
-              ease: "easeInOut",
-            }}
+            initial={{ opacity: 1, scale: 1, x: Math.random() * containerSize.width, y: containerSize.height }}
+            animate={{ y: -150 }}
+            transition={{ duration: 6 + Math.random() * 3, repeat: Infinity, ease: "linear" }}
             className="absolute"
           >
             <Heart
-              style={{ width: heart.size, height: heart.size }}
+              style={{ width: size, height: size }}
               className={i % 3 === 0 ? "text-rose-400" : i % 3 === 1 ? "text-pink-400" : "text-red-400"}
               fill="currentColor"
             />
           </motion.div>
-        ))}
-      </div>
-    );
-  };
+        );
+      })}
+    </div>
+  );
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-start px-4 pt-20 sm:pt-24 pb-2 text-center relative overflow-hidden">
+    <section className="min-h-screen flex flex-col items-center justify-center px-4 py-8 sm:py-12 text-center relative overflow-hidden">
+      {/* Floating hearts behind all content */}
       <FloatingHearts />
 
       <motion.div
-        initial={{ opacity: 0, y: 5 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="space-y-3 sm:space-y-4 relative z-10"
+        className="space-y-4 sm:space-y-5 relative z-10"
       >
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="inline-block mx-auto"
+          transition={{ delay: 0.1 }}
+          className="inline-block mx-auto mt-2 sm:mt-3"
         >
           <span className="px-4 py-1 text-sm bg-rose-50 text-rose-600 rounded-full border border-rose-200">
             Save The Date
           </span>
         </motion.div>
 
-        <div className="space-y-1 sm:space-y-2">
+        <div className="space-y-2 sm:space-y-3">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.2 }}
             className="text-gray-500 font-light italic text-base sm:text-lg"
           >
             Our families warmly invite you to join us in celebrating this special union of
@@ -167,7 +146,7 @@ export default function Hero() {
           <motion.h2
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.3 }}
             className="text-3xl sm:text-5xl font-serif bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-pink-600"
           >
             {config.data.groomName} & {config.data.brideName}
@@ -176,9 +155,9 @@ export default function Hero() {
 
         {/* Date & Time */}
         <motion.div
-          initial={{ y: 5, opacity: 0 }}
+          initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.4 }}
           className="flex flex-col items-center mt-2 sm:mt-3"
         >
           <div className="flex items-center space-x-2">
@@ -190,14 +169,15 @@ export default function Hero() {
           <div className="flex items-center space-x-2 mt-1">
             <Clock className="w-5 h-5 text-rose-400" />
             <span className="text-gray-700 font-medium text-sm sm:text-base">
-              {formatAgendaTime(config.data.agenda[0].startTime, config.data.agenda[0].endTime)}
+              {formatAgendaTime(
+                config.data.agenda[0].startTime,
+                config.data.agenda[0].endTime
+              )}
             </span>
           </div>
         </motion.div>
 
-        <div className="mb-2">
-          <CountdownTimer targetDate={config.data.agenda[0].date} />
-        </div>
+        <CountdownTimer targetDate={config.data.agenda[0].date} />
       </motion.div>
     </section>
   );
